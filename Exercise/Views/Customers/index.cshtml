@@ -5,11 +5,9 @@
 }
 
 <h2>Customers</h2>
-@using (Html.BeginForm("CustomerForm", "Customers"))
-{
-    <button type="submit" class="btn btn-primary"> Add Customers</button>
-}
-
+<p>
+    @Html.ActionLink("New Customer", "CustomerForm", "Customers", null, new { @class = "btn btn-primary" })
+</p>
     <table id="customers" class="table-bordered table-hover">
         <thead>
             <tr>
@@ -18,7 +16,8 @@
                 <th>Delete</th>
             </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+        </tbody>
     </table>
 @section scripts
 {

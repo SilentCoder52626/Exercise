@@ -79,7 +79,8 @@ namespace Exercise.Controllers
         //Get Method
         public ActionResult Index()
         {
-             return View();
+            var movies = context.Movies.Include(m => m.MoviesGenre).ToList();
+             return View(movies);
         }
         public ActionResult Details(int id)
         {

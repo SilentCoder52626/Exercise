@@ -41,7 +41,7 @@ namespace Exercise.Controllers.Api
 
         //Post /api/customers
         [HttpPost]
-        public IHttpActionResult CreateCustomer(CustomersDto customersDto)
+        public IHttpActionResult CreateCustomers(CustomersDto customersDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -55,7 +55,7 @@ namespace Exercise.Controllers.Api
 
         //Put /api/customers/id
 
-        public void UpdateCustomers(int id, CustomersDto customersDto)
+        public IHttpActionResult UpdateCustomers(int id, CustomersDto customersDto)
         {
             if (!ModelState.IsValid)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
@@ -65,16 +65,18 @@ namespace Exercise.Controllers.Api
             Mapper.Map(customersDto, CustomerInDB);
             
             context.SaveChanges();
+            return Ok();
         }
         //DELETE /api/customers/id
         [HttpDelete]
-        public void DeleteCustomer(int id)
+        public IHttpActionResult DeleteCustomers(int id)
         {
             var CustomerInDB = context.Customers.SingleOrDefault(c => c.Id == id);
             if (CustomerInDB == null)
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             context.Customers.Remove(CustomerInDB);
             context.SaveChanges();
+            return Ok();
         }
     }
 }

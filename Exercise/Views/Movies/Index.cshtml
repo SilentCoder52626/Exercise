@@ -9,7 +9,7 @@
 <p>
     @Html.ActionLink("New Movie", "MoviesForm", "Movies", null, new { @class = "btn btn-primary" })
 </p>
-    <table @*id ="movies"*@ class="table-bordered table-hover">
+    <table id="movies" class="table table-bordered table-hover">
         <thead>
             <tr>
                 <th>Movies</th>
@@ -17,50 +17,44 @@
                 <th>Delete</th>
             </tr>
         </thead>
-        <tbody>   
-            @foreach(var movies in Model){
-                <tr>
-                    <td>@Html.ActionLink(movies.Name,"Edit","Customers",new{id)</td>
-                </tr>
-            }
+        <tbody>         
         </tbody>
-    </table>
+ </table> 
 @section scripts
 {
-    <script>
-        $(document).ready(function () {
-            var table = $("#movies").DataTable({
-                ajax: {
-                    url: "/api/movies",
-                    dataSrc: ""
-                },
-
-                columns: [
-                    {
-                        data = "name",
-                        render: function (data, type, movie) {
-                            return "<a href='/movies/edit" + movie.id + "'>" + movie.name + "</a>";
-                        }
+        <script>
+            $(document).ready(function () {
+                var table = $("#movies").DataTable({
+                    ajax: {
+                        url: "/api/movies",
+                        dataSrc: ""
                     },
-                    {
-                        data = "moviesGenre.genre"
-                    },
-                    {
-                        data: "id",
-                        render: function (data) {
-                            return "<button class='btn-link js-delete' data-movies-id=" + data + ">Delete</button>";
+                    columns: [
+                        {
+                            data: "name",
+                            render: function (data, type, movie) {
+                                return "<a href='/movies/edit/" + movie.id + "'>" + movie.name + "</a>";
+                            }
+                        },
+                        {
+                            data: "moviesGenre.genre"
+                        },
+                        {
+                            data: "id",
+                            render: function (data) {
+                                return "<button class='btn-link js-delete' data-movie-id=" + data + ">Delete</button>";
+                            }
                         }
-                    }
+                    ]
+                });
 
-                ]           
-            });
-
-            $("#movies").on("click", ".js-delete", function () {
+                $("#movies").on("click",".js-delete", function () {
+                    var button = $(this);   
                 bootbox.confirm("Are you sure to delete this Movie?", function (result) {
                     if (result) {
                         $.ajax({
-                            url: "/api/movies" + button.attr("data-movies-id"),
-                            method: DELETE,
+                            url: "/api/movies/" + button.attr("data-movie-id"),
+                            method: "DELETE",
                             success: function () {
                                 table.row(button.parents("tr")).remove().draw();
                             }
@@ -68,9 +62,9 @@
                     }
                 });
             });
-        });
+         });
 
-    </script>
-}
+        </script>
+    }
 
 

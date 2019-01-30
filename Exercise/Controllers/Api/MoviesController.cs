@@ -23,8 +23,10 @@ namespace Exercise.Controllers.Api
         //Get /api/movies
         public IEnumerable<MoviesDto> GetMovies()
         {
-            return context.Movies.Include(m=> m.MoviesGenre)
+            return context.Movies.Include(m => m.MoviesGenre)
                 .ToList().Select(Mapper.Map<Movies, MoviesDto>);
+            //return context.Movies
+            //    .ToList().Select(Mapper.Map<Movies, MoviesDto>);
         }
         //Get /api/movies/id
         public MoviesDto GetMovies(int id)
@@ -47,7 +49,7 @@ namespace Exercise.Controllers.Api
             return Created(new Uri(Request.RequestUri + "/" + movies.Id), moviesDto);
         }
         //put /api/movies/id
-        public void UpdateMovie(int id, MoviesDto moviesDto)
+        public IHttpActionResult UpdateMovie(int id, MoviesDto moviesDto)
         {
             if (!ModelState.IsValid)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
@@ -56,15 +58,17 @@ namespace Exercise.Controllers.Api
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             Mapper.Map(moviesDto, MoviesInDb);
             context.SaveChanges();
+            return Ok();
         }
         //Delete /api/movies/id
-        public void DeleteMovie(int id)
+        public IHttpActionResult DeleteMovie(int id)
         {
             var MoviesInDb = context.Movies.SingleOrDefault(m => m.Id == id);
             if (MoviesInDb == null)
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             context.Movies.Remove(MoviesInDb);
             context.SaveChanges();
+            return Ok();
         }
     }
 }
