@@ -1,0 +1,49 @@
+﻿@model Exercise.ViewModel.CustomerFormViewModel
+
+@{
+    /**/
+
+    /**/
+
+    ViewBag.Title = Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+@using (Html.BeginForm("Save", "Customers"))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Name)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.BirthDate)
+        @Html.TextBoxFor(m => m.BirthDate, "{0:dd MM yyyy}", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.BirthDate)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.MembershipTypeId)
+        @Html.DropDownListFor(m => m.MembershipTypeId, new SelectList(Model.MembershipTypes, "Id", "Name"), "Select Membership Type", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.MembershipTypeId)
+    </div>
+
+    <div class="checkbox">
+        <label>
+
+            @Html.CheckBoxFor(m => m.IsSubscribed) Subscribed ?
+        </label>
+    </div>
+    @Html.HiddenFor(m => m.Id)
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary"> save</button>
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
